@@ -20,7 +20,42 @@ Or install it yourself as:
 
 ## Usage
 
+Before you use it, add:
 
+```ruby
+require 'html_fragment_compare'
+```
+
+```ruby
+    
+    expect(HtmlFragmentCompare.eql?('<h1 />', '<h1 />')).to eq(true)
+
+    expect(HtmlFragmentCompare.eql?('<h2 />', '<h1 />')).to eq(false)
+    
+    s1= '
+      <div class="show-image no-padding col-xs-12 col-sm-6 col-md-5">
+        <a href="/kreatio/kreatio-blog/1000393/incremental-demographics" title="">
+            <img alt="Incremental Demographics" src="/w-images/bcf25e0d-9fbe-4293-ba7c-58c0de9eaadd/2/demographics-154x190.jpg">
+        </a>
+      </div>
+    '
+    s2= '
+      <div class="show-image no-padding col-xs-12 col-sm-6 col-md-5">
+        <a title="" href="/kreatio/kreatio-blog/1000393/incremental-demographics">
+            <img src="/w-images/bcf25e0d-9fbe-4293-ba7c-58c0de9eaadd/2/demographics-154x190.jpg" alt="Incremental Demographics" >
+        </a>
+      </div>
+    '
+
+    expect(HtmlFragmentCompare.eql?(s1, s2)).to eq(true)
+
+```
+
+See the spec folder for more examples.
+
+## Notes
+
+Though all examples are using `rspec`. The gem can be used anywhere. Only external dependency is `nokogiri`.
 
 ## Development
 
@@ -30,7 +65,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/html_fragment_compare/fork )
+1. Fork it ( https://github.com/kum-deepak/html_fragment_compare/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

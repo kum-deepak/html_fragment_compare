@@ -1,5 +1,4 @@
 require "html_fragment_compare/version"
-
 require "nokogiri"
 
 module HtmlFragmentCompare
@@ -14,7 +13,7 @@ module HtmlFragmentCompare
     end
   end
 
-  def self._eql_node_set(node_set1, node_set2)
+  def self._node_set_eql?(node_set1, node_set2)
     node_set1= _prune_comments_and_empty_text_nodes(node_set1)
     node_set2= _prune_comments_and_empty_text_nodes(node_set2)
 
@@ -24,20 +23,20 @@ module HtmlFragmentCompare
     node_set1.to_a.each do |c1|
       c2= e2.next
 
-      return false unless _eql?(c1, c2)
+      return false unless _node_eql?(c1, c2)
     end
 
     return true
   end
 
-  def self._eql?(node1, node2)
+  def self._node_eql?(node1, node2)
     node1.name == node2.name &&
-        _compare_text_nodes(node1, node2) &&
+        _text_nodes_eql?(node1, node2) &&
         _attrs_to_hash(node1.attributes) == _attrs_to_hash(node2.attributes) &&
-        _eql_node_set(node1.children, node2.children)
+        _node_set_eql?(node1.children, node2.children)
   end
 
-  def self._compare_text_nodes(node1, node2)
+  def self._text_nodes_eql?(node1, node2)
     if node1.class == Nokogiri::XML::Text && node2.class == Nokogiri::XML::Text
       node1.text.strip == node2.text.strip
     else
@@ -49,11 +48,11 @@ module HtmlFragmentCompare
     Nokogiri::HTML::DocumentFragment.parse(s)
   end
 
-  def self.compare(s1, s2)
+  def self.eql?(s1, s2)
 
     node1 = _parse(s1)
     node2 = _parse(s2)
 
-    _eql?(node1, node2)
+    _node_eql?(node1, node2)
   end
 end
